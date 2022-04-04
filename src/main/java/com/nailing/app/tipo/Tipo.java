@@ -30,7 +30,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class Tipo {
     
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private Long id;
     
@@ -67,6 +67,14 @@ public class Tipo {
         this.siguienteFase = siguienteFase;
         this.centro = centro;
     }
+
+    public Tipo(Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.siguienteFase = siguienteFase;
+        this.centro = centro;
+    }
+    
 
     public Long getId() {
         return id;

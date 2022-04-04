@@ -4,6 +4,7 @@
  */
 package com.nailing.app.cita;
 
+import java.io.Serializable;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,9 +12,12 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Usuario
  */
-public interface CitaRepository extends CrudRepository<Cita, Long>{
+public interface CitaRepository extends CrudRepository<Cita, Serializable>{
     
     @Query("SELECT cita from Cita cita where cita.usuario.id = ?1")
     public List<Cita> findByUsuario(Long id);
+    
+    @Query("SELECT cita from Cita cita where cita.centro.id = :id")
+    public List<Cita> findCitasByCentro(Long id);
     
 }

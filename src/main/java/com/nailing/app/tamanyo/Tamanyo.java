@@ -15,13 +15,14 @@ import javax.validation.constraints.PositiveOrZero;
 
 import com.nailing.app.centro.Centro;
 import com.nailing.app.components.Fases;
+import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "tamanyo")
 public class Tamanyo {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
@@ -39,8 +40,8 @@ public class Tamanyo {
 	@Column(name = "coste")
 	private Double coste;
 
-	@Column(name = "siguiente_fase")
 	@NotNull
+	@Column(name = "siguiente_fase")
 	private Fases siguienteFase;
 
 	@ManyToOne
@@ -52,15 +53,22 @@ public class Tamanyo {
 	}
 
 	public Tamanyo(Long id, @NotNull NombreTamanyo nombre, @Positive @NotNull Integer tiempo,
-			@PositiveOrZero @NotNull Double coste, @NotNull Fases siguiente_fase, Centro centro) {
+			@PositiveOrZero @NotNull Double coste, @NotNull Fases siguienteFase, Centro centro) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.tiempo = tiempo;
 		this.coste = coste;
-		this.siguienteFase = siguiente_fase;
+		this.siguienteFase = siguienteFase;
 		this.centro = centro;
 	}
+
+    public Tamanyo(Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.siguienteFase = siguienteFase;
+        this.centro = centro;
+    }
 
 	public Long getId() {
 		return id;
@@ -94,12 +102,12 @@ public class Tamanyo {
 		this.coste = coste;
 	}
 
-	public Fases getSiguiente_fase() {
+	public Fases getSiguienteFase() {
 		return siguienteFase;
 	}
 
-	public void setSiguiente_fase(Fases siguiente_fase) {
-		this.siguienteFase = siguiente_fase;
+	public void setSiguienteFase(Fases siguienteFase) {
+		this.siguienteFase = siguienteFase;
 	}
 
 	public Centro getCentro() {
@@ -132,7 +140,7 @@ public class Tamanyo {
 	@Override
 	public String toString() {
 		return "Tamanyo [id=" + id + ", nombre=" + nombre + ", tiempo=" + tiempo + ", coste=" + coste
-				+ ", siguiente_fase=" + siguienteFase + "]";
+				+ ", siguienteFase=" + siguienteFase + "]";
 	}
 
 }

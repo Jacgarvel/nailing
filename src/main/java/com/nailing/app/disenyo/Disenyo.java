@@ -28,7 +28,7 @@ import javax.validation.constraints.PositiveOrZero;
 @EntityListeners(AuditingEntityListener.class)
 public class Disenyo {
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name="id")
     private Long id;
 
@@ -60,6 +60,13 @@ public class Disenyo {
     public Disenyo(Long id, NombreDisenyo nombre, Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
         this.id = id;
         this.nombre = nombre;
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.siguienteFase = siguienteFase;
+        this.centro = centro;
+    }
+
+    public Disenyo(Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
         this.tiempo = tiempo;
         this.coste = coste;
         this.siguienteFase = siguienteFase;

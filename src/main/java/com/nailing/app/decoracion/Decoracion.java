@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,11 +29,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Decoracion {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(name = "nombre")
-    @NotBlank
     private NombreDecoracion nombre;
     
     @Column(name = "tiempo")
@@ -103,6 +101,13 @@ public class Decoracion {
     public Decoracion(Long id, NombreDecoracion nombre, Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
         this.id = id;
         this.nombre = nombre;
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.siguienteFase = siguienteFase;
+        this.centro = centro;
+    }
+
+    public Decoracion(Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
         this.tiempo = tiempo;
         this.coste = coste;
         this.siguienteFase = siguienteFase;

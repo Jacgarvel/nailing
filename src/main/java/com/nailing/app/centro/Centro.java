@@ -11,11 +11,17 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.nailing.app.usuario.Usuario;
 
 import java.time.LocalTime;
 
@@ -30,7 +36,7 @@ import java.time.LocalTime;
 public class Centro {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "nombre")
@@ -42,119 +48,145 @@ public class Centro {
 	@Size(max = 1000)
 	@NotBlank
 	private String imagen;
-
+	@Column(name = "provincia")
+	@Size(max = 50)
+	@NotBlank
 	private String provincia;
-        
-        private LocalTime horaApertura;
-        
-        private LocalTime horaCierre;
 
-    public Centro() {
-    }
+	@Column(name="apertura_am")
+	private LocalTime aperturaAM;
 
-    public Centro(String nombre, String imagen, String provincia, LocalTime horaApertura, LocalTime horaCierre) {
-        this.nombre = nombre;
-        this.imagen = imagen;
-        this.provincia = provincia;
-        this.horaApertura = horaApertura;
-        this.horaCierre = horaCierre;
-    }
+	@Column(name="cierre_am")
+	private LocalTime cierreAM;
 
-    public Long getId() {
-        return id;
-    }
+	@Column(name="apertura_pm")
+	private LocalTime aperturaPM;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Column(name="cierre_pm")
+	private LocalTime cierrePM;
+	/*
+	@OneToOne
+    @JoinColumn(name = "usuario")
+    private Usuario usuario;*/
 
-    public String getNombre() {
-        return nombre;
-    }
+	@Column(name = "suscripcion")
+	@NotNull
+	private Suscripcion suscripcion;
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	public Centro() {
+	}
 
-    public String getImagen() {
-        return imagen;
-    }
+	public Centro(Long id, @Size(max = 1000) @NotBlank String nombre, @Size(max = 1000) @NotBlank String imagen,
+			String provincia, LocalTime aperturaAM, LocalTime cierreAM, LocalTime aperturaPM, LocalTime cierrePM, Suscripcion suscripcion) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.imagen = imagen;
+		this.provincia = provincia;
+		this.aperturaAM = aperturaAM;
+		this.cierreAM = cierreAM;
+		this.aperturaPM = aperturaPM;
+		this.cierrePM = cierrePM;
+		this.suscripcion = suscripcion;
+	}
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getProvincia() {
-        return provincia;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
+	public String getNombre() {
+		return nombre;
+	}
 
-    public LocalTime getHoraApertura() {
-        return horaApertura;
-    }
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    public void setHoraApertura(LocalTime horaApertura) {
-        this.horaApertura = horaApertura;
-    }
+	public String getImagen() {
+		return imagen;
+	}
 
-    public LocalTime getHoraCierre() {
-        return horaCierre;
-    }
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 
-    public void setHoraCierre(LocalTime horaCierre) {
-        this.horaCierre = horaCierre;
-    }
+	public String getProvincia() {
+		return provincia;
+	}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + Objects.hashCode(this.id);
-        hash = 73 * hash + Objects.hashCode(this.nombre);
-        hash = 73 * hash + Objects.hashCode(this.imagen);
-        hash = 73 * hash + Objects.hashCode(this.provincia);
-        hash = 73 * hash + Objects.hashCode(this.horaApertura);
-        hash = 73 * hash + Objects.hashCode(this.horaCierre);
-        return hash;
-    }
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Centro other = (Centro) obj;
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        if (!Objects.equals(this.imagen, other.imagen)) {
-            return false;
-        }
-        if (!Objects.equals(this.provincia, other.provincia)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.horaApertura, other.horaApertura)) {
-            return false;
-        }
-        return Objects.equals(this.horaCierre, other.horaCierre);
-    }
+	public LocalTime getAperturaAM() {
+		return aperturaAM;
+	}
 
-    @Override
-    public String toString() {
-        return "Centro{" + "id=" + id + ", nombre=" + nombre + ", imagen=" + imagen + ", provincia=" + provincia + ", horaApertura=" + horaApertura + ", horaCierre=" + horaCierre + '}';
-    }
-        
-    
-    
+	public void setAperturaAM(LocalTime aperturaAM) {
+		this.aperturaAM = aperturaAM;
+	}
+
+	public LocalTime getCierreAM() {
+		return cierreAM;
+	}
+
+	public void setCierreAM(LocalTime cierreAM) {
+		this.cierreAM = cierreAM;
+	}
+
+	public LocalTime getAperturaPM() {
+		return aperturaPM;
+	}
+
+	public void setAperturaPM(LocalTime aperturaPM) {
+		this.aperturaPM = aperturaPM;
+	}
+
+	public LocalTime getCierrePM() {
+		return cierrePM;
+	}
+
+	public void setCierrePM(LocalTime cierrePM) {
+		this.cierrePM = cierrePM;
+	}
+
+	public Suscripcion getSuscripcion() {
+		return suscripcion;
+	}
+
+	public void setSuscripcion(Suscripcion suscripcion) {
+		this.suscripcion = suscripcion;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(aperturaAM, aperturaPM, cierreAM, cierrePM, id, imagen, nombre, provincia);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Centro other = (Centro) obj;
+		return Objects.equals(aperturaAM, other.aperturaAM) && Objects.equals(aperturaPM, other.aperturaPM)
+				&& Objects.equals(cierreAM, other.cierreAM) && Objects.equals(cierrePM, other.cierrePM)
+				&& Objects.equals(id, other.id) && Objects.equals(imagen, other.imagen)
+				&& Objects.equals(nombre, other.nombre) && Objects.equals(provincia, other.provincia);
+	}
+
+	@Override
+	public String toString() {
+		return "Centro [id=" + id + ", nombre=" + nombre + ", imagen=" + imagen + ", provincia=" + provincia
+				+ ", aperturaAM=" + aperturaAM + ", cierreAM=" + cierreAM + ", aperturaPM=" + aperturaPM + ", cierrePM="
+				+ cierrePM +", suscripcion="+ suscripcion +"]";
+	}
+
 }

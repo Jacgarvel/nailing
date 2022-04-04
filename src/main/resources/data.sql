@@ -1,5 +1,18 @@
 -- SI LA CARGA DA ERROR INTENTAD BORRAR LAS MISMAS TABLAS QUE SE TOCAN EN ESTE SCRIPT Y DEJAD QUE SPRING LAS VUELVA A GENERAR--
 
+ALTER SEQUENCE cita_id_seq RESTART WITH 1;
+ALTER SEQUENCE usuario_id_seq RESTART WITH 1;
+ALTER SEQUENCE tipo_id_seq RESTART WITH 7;
+ALTER SEQUENCE base_id_seq RESTART WITH 23;
+ALTER SEQUENCE forma_id_seq RESTART WITH 19;
+ALTER SEQUENCE tamanyo_id_seq RESTART WITH 25;
+ALTER SEQUENCE disenyo_id_seq RESTART WITH 16;
+ALTER SEQUENCE decoracion_id_seq RESTART WITH 55;
+ALTER SEQUENCE acabado_id_seq RESTART WITH 7;
+ALTER SEQUENCE centro_id_seq RESTART WITH 4;
+
+DELETE FROM cita;
+DELETE FROM usuario;
 DELETE FROM tipo;
 DELETE FROM base;
 DELETE FROM forma;
@@ -8,11 +21,11 @@ DELETE FROM disenyo;
 DELETE FROM decoracion;
 DELETE FROM acabado;
 DELETE FROM centro;
-
----------------------------------------------CENTROS---------------------------------------------
-INSERT INTO centro (id, hora_apertura, hora_cierre, imagen, nombre, provincia) VALUES (1, '09:00:00', '21:00:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=U%C3%B1as+Pepa', 'Uñas Pepa', 'Málaga');
-INSERT INTO centro (id, hora_apertura, hora_cierre, imagen, nombre, provincia) VALUES (2, '08:30:00', '20:30:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=Nails+Factory', 'Nails Factory', 'Sevilla');
-INSERT INTO centro (id, hora_apertura, hora_cierre, imagen, nombre, provincia) VALUES (3, '09:30:00', '21:30:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=Mafalda', 'Mafalda Salón de Belleza', 'Cádiz');
+ 
+------------------------------------------CENTROS---------------------------------------------
+INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (1, '09:00:00','13:00:00','16:00:00','21:00:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=U%C3%B1as+Pepa', 'Uñas Pepa', 'Málaga',0);
+INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (2, '08:30:00','13:00:00','16:00:00','20:30:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=Nails+Factory', 'Nails Factory', 'Sevilla',2);
+INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (3, '09:30:00','13:00:00','16:00:00','21:30:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=Mafalda', 'Mafalda Salón de Belleza', 'Cádiz',3);
 
 ----------------------------------------------TIPOS----------------------------------------------
 --CENTRO 1--

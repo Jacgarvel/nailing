@@ -4,10 +4,9 @@
  */
 package com.nailing.app.cita;
 
-import com.nailing.app.decoracion.Decoracion;
-import com.nailing.app.acabado.Acabado;
-import com.nailing.app.disenyo.Disenyo;
-import com.nailing.app.tipo.Tipo;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -17,18 +16,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.nailing.app.acabado.Acabado;
 import com.nailing.app.base.Base;
 import com.nailing.app.centro.Centro;
+import com.nailing.app.decoracion.Decoracion;
+import com.nailing.app.disenyo.Disenyo;
 import com.nailing.app.forma.Forma;
 import com.nailing.app.tamanyo.Tamanyo;
+import com.nailing.app.tipo.Tipo;
 import com.nailing.app.usuario.Usuario;
-import java.time.LocalTime;
-import java.util.Objects;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
 /**
  *
@@ -40,7 +41,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class Cita {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(name = "coste")
@@ -49,11 +50,11 @@ public class Cita {
     
     @NotNull
     @Column(name = "hora_inicio")
-    private LocalTime horaInicio;
+    private LocalDateTime horaInicio;
     
     @NotNull
     @Column(name = "hora_fin")
-    private LocalTime horaFin;
+    private LocalDateTime horaFin;
     
     @ManyToOne
     @JoinColumn(name = "decoracion_id")
@@ -83,10 +84,12 @@ public class Cita {
     @JoinColumn(name = "forma_id")
     private Forma forma;
     
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "centro_id")
     private Centro centro;
@@ -94,7 +97,7 @@ public class Cita {
     public Cita() {
     }
 
-    public Cita(Double coste, LocalTime horaInicio, LocalTime horaFin, Decoracion decoracion, Acabado acabado, Base base, Tipo tipo, Disenyo disenyo, Tamanyo tamanyo, Forma forma, Usuario usuario, Centro centro) {
+    public Cita(Double coste, LocalDateTime horaInicio, LocalDateTime horaFin, Decoracion decoracion, Acabado acabado, Base base, Tipo tipo, Disenyo disenyo, Tamanyo tamanyo, Forma forma, Usuario usuario, Centro centro) {
         this.coste = coste;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -125,19 +128,19 @@ public class Cita {
         this.coste = coste;
     }
 
-    public LocalTime getHoraInicio() {
+    public LocalDateTime getHoraInicio() {
         return horaInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
+    public void setHoraInicio(LocalDateTime horaInicio) {
         this.horaInicio = horaInicio;
     }
 
-    public LocalTime getHoraFin() {
+    public LocalDateTime getHoraFin() {
         return horaFin;
     }
 
-    public void setHoraFin(LocalTime horaFin) {
+    public void setHoraFin(LocalDateTime horaFin) {
         this.horaFin = horaFin;
     }
 

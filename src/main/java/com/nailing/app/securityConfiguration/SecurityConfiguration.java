@@ -51,11 +51,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         http.csrf().disable().cors().and().authorizeRequests()
             //.antMatchers("/**").authenticated()
             //.antMatchers("/**/**").authenticated()
-            .antMatchers("/login").permitAll()
-            .antMatchers("/centros").permitAll()
-            .antMatchers("/centros/details/**").permitAll()
+            .antMatchers("/login").anonymous()
+            .antMatchers("/centros/list").permitAll()
+            .antMatchers("/signUp").anonymous()
+            .antMatchers("/centros/show/**").permitAll()
+            .antMatchers("/swagger-ui/**").permitAll()
             .anyRequest().authenticated()
-            .and()
+            .and().logout().and()
             .httpBasic();
         
     }

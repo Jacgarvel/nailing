@@ -1,6 +1,7 @@
 package com.nailing.app.base;
 
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,13 +17,14 @@ import javax.validation.constraints.Size;
 
 import com.nailing.app.centro.Centro;
 import com.nailing.app.components.Fases;
+import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "base")
 public class Base {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
@@ -62,6 +64,13 @@ public class Base {
 		this.siguienteFase = fases;
 		this.centro = centro;
 	}
+
+    public Base(Integer tiempo, Double coste, Centro centro) {
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.centro = centro;
+    }
+        
 
 	public Long getId() {
 		return id;

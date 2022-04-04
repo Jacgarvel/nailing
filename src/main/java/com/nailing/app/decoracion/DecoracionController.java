@@ -5,6 +5,7 @@
 package com.nailing.app.decoracion;
 
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 /**
  *
  * @author Usuario
@@ -33,39 +36,69 @@ public class DecoracionController {
     @Autowired
     DecoracionService decoracionService;
     
+    @Operation(summary = "Añade una Decoracion")
     @PostMapping("/add")
     public ResponseEntity<Decoracion> addDecoracion(@RequestBody Decoracion decoracion){
         Decoracion deco = decoracionService.addDecoracion(decoracion);
         if(deco == null)
-            return new ResponseEntity<Decoracion>(deco, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Decoracion>(deco, HttpStatus.CREATED);
+            return new ResponseEntity<>(deco, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(deco, HttpStatus.CREATED);
     }
     
+    @Operation(summary = "Borra una Decoracion")
     @DeleteMapping("/delete/{id}")
     public void deleteDecoracion(@PathVariable Long id){
         decoracionService.removeDecoracion(id);
     }
     
+    @Operation(summary = "Muestra una Decoracion")
     @GetMapping("/show/{id}")
     public ResponseEntity<Decoracion> showDecoracion(@PathVariable Long id){
         try{
             Decoracion deco = decoracionService.findById(id);
-            return new ResponseEntity<Decoracion>(deco,HttpStatus.OK);
+            return new ResponseEntity<>(deco,HttpStatus.OK);
         }catch(NoSuchElementException e){
-            return new ResponseEntity<Decoracion>(decoracionService.findById(id),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(decoracionService.findById(id),HttpStatus.BAD_REQUEST);
         }       
     }
     
+    @Operation(summary = "Lista todas las Decoraciones")
     @GetMapping("/list")
     public ResponseEntity<List<Decoracion>> listDecoraciones(){
         List<Decoracion> decos = StreamSupport.stream(decoracionService.findAll()
                 .spliterator(), false).collect(Collectors.toList());
-        return new ResponseEntity<List<Decoracion>>(decos,HttpStatus.OK);
+        return new ResponseEntity<>(decos,HttpStatus.OK);
     }
     
+    @Operation(summary = "Muestra Decoraciones en funcion de Centro y Diseño")
     @GetMapping("{disenyoId}/centro/{centroId}")
     public ResponseEntity<List<Decoracion>> decoracionesByCentroDisenyo(@PathVariable Long disenyoId, @PathVariable Long centroId){
         List<Decoracion> decoraciones = decoracionService.findDecoracionByCentroDisenyo(disenyoId, centroId);
-        return new ResponseEntity<List<Decoracion>>(decoraciones, HttpStatus.OK);
+        return new ResponseEntity<>(decoraciones, HttpStatus.OK);
+    }
+    
+    @Operation(summary = "Muestra las posibles Decoraciones")
+    @GetMapping("/all")
+    public ResponseEntity<List<String>> listPosibleDecoracion(){
+        List<String> decoraciones = decoracionService.listPosibleDecoracion();
+        return new ResponseEntity<>(decoraciones,HttpStatus.OK);
+    }
+
+    @Operation(summary = "Lista todas las Decoraciones de un Centro")
+    @GetMapping("/centro/{centroId}/list")
+    public ResponseEntity<List<Decoracion>> listByCentro(@PathVariable Long centroId){
+        List<Decoracion> decoraciones = decoracionService.findByCentro(centroId);
+        return new ResponseEntity<>(decoraciones,HttpStatus.OK);
+    }
+
+    @Operation(summary = "Añade una Decoracion a un Centro")
+    @PostMapping("/add/centro")
+    public ResponseEntity<List<Decoracion>> addDecoracionCentro(@RequestBody Map<String,List<String>> decids){
+        try{
+            List<Decoracion> decoraciones = decoracionService.addDecoracionCentro(decids);
+            return new ResponseEntity<>(decoraciones, HttpStatus.CREATED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

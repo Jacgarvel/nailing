@@ -4,6 +4,7 @@
  */
 package com.nailing.app.disenyo;
 
+import java.io.Serializable;
 import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * @author CANDELA
  */
 @Repository
-public interface DisenyoRepository extends CrudRepository<Disenyo, Long>{
+public interface DisenyoRepository extends CrudRepository<Disenyo, Serializable>{
     @Query("SELECT disenyo from Disenyo disenyo where disenyo.centro.id = ?1")
 	public List<Disenyo> findByCentro(Long id);
 }

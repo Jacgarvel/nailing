@@ -7,6 +7,7 @@ package com.nailing.app.acabado;
 import com.nailing.app.centro.Centro;
 import com.nailing.app.components.Fases;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -16,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,11 +30,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Acabado {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(name = "nombre")
-    @NotBlank
     private NombreAcabado nombre;
     
     @Column(name = "tiempo")
@@ -109,6 +108,13 @@ public class Acabado {
         this.centro = centro;
     }
 
+    public Acabado(Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.siguienteFase = siguienteFase;
+        this.centro = centro;
+    }
+    
     public Acabado() {
         super();
     }

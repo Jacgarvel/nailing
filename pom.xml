@@ -80,6 +80,22 @@
                 <artifactId>httpclient</artifactId>
                 <scope>test</scope>
             </dependency>
+		
+	    <dependency>
+                <artifactId>junit</artifactId>
+                <groupId>junit</groupId>
+            </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+		
 	</dependencies>
 
 	<build>

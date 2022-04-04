@@ -10,6 +10,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +28,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Table(name = "forma")
 public class Forma {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -59,6 +60,13 @@ public class Forma {
     public Forma(Long id, NombreForma nombre, Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
         this.id = id;
         this.nombre = nombre;
+        this.tiempo = tiempo;
+        this.coste = coste;
+        this.siguienteFase = siguienteFase;
+        this.centro = centro;
+    }
+
+    public Forma(Integer tiempo, Double coste, Fases siguienteFase, Centro centro) {
         this.tiempo = tiempo;
         this.coste = coste;
         this.siguienteFase = siguienteFase;
