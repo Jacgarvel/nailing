@@ -73,6 +73,8 @@ public class DisenyoService {
                         result.add(d);
                 }
                 break;
+            default:
+                break;
         }
         return result;
     }

@@ -81,6 +81,8 @@ public class BaseService {
 					result.add(b);
 			}
 			break;
+        default:
+            break;
 		}
 		
 		return result;
