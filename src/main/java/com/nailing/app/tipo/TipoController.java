@@ -90,7 +90,8 @@ public class TipoController {
             List<Tipo> tipos = tipoService.addTipoCentro(tipids);
             return new ResponseEntity<>(tipos, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<Tipo> tipos = tipoService.addTipoCentro(tipids);
+            return new ResponseEntity<>(tipos, HttpStatus.BAD_REQUEST);
         }
     }
 }

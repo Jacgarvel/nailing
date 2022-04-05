@@ -4,7 +4,6 @@
  */
 package com.nailing.app.securityConfiguration;
 
-import com.nailing.app.usuario.Usuario;
 import com.nailing.app.usuario.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,10 +27,7 @@ private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Usuario user = this.usuarioRepository.findByUsername(s);
-        UserPrincipal userPrincipal = new UserPrincipal(user);
-
-        return userPrincipal;
+        return new UserPrincipal(this.usuarioRepository.findByUsername(s));
     }
     
 }

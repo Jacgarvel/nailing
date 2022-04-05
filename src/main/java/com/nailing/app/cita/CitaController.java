@@ -46,7 +46,7 @@ public class CitaController {
 	public ResponseEntity<List<Cita>> listUnyas() {
 		List<Cita> unyas = StreamSupport.stream(citaService.findAll().spliterator(), false)
 				.collect(Collectors.toList());
-		return new ResponseEntity<List<Cita>>(unyas, HttpStatus.OK);
+		return new ResponseEntity<>(unyas, HttpStatus.OK);
 	}
 
 	@Operation(summary = "Muestra una Cita")

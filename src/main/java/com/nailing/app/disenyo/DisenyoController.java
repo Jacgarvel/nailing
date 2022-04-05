@@ -95,7 +95,8 @@ public class DisenyoController {
             List<Disenyo> disenyos = disenyoService.addDisenyoCentro(disids);
             return new ResponseEntity<>(disenyos, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			List<Disenyo> disenyos = disenyoService.addDisenyoCentro(disids);
+            return new ResponseEntity<>(disenyos, HttpStatus.BAD_REQUEST);
         }
     }
         

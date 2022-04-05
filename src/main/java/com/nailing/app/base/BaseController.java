@@ -86,7 +86,8 @@ public class BaseController {
             List<Base> bases = baseService.addBaseCentro(basids);
             return new ResponseEntity<>(bases, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			List<Base> bases = baseService.addBaseCentro(basids);
+            return new ResponseEntity<>(bases, HttpStatus.BAD_REQUEST);
         }
     }
 }

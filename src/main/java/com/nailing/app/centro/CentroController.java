@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,8 +47,8 @@ public class CentroController {
     public ResponseEntity<Centro> addCentro(@RequestBody Centro centro, @PathVariable int idUser){
         centroService.asociarCentroUsuario(usuarioService.findById((long) idUser).get(), centro);
         if(centro == null)
-            return new ResponseEntity<Centro>(centro, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<Centro>(centro, HttpStatus.CREATED);
+            return new ResponseEntity<>(centro, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(centro, HttpStatus.CREATED);
     }
 
     
@@ -56,7 +57,7 @@ public class CentroController {
     @GetMapping("/list")
     public ResponseEntity<List<Centro>> findAll(){
 	List<Centro> centros = centroService.findAll();
-	return new ResponseEntity<List<Centro>>(centros, HttpStatus.OK);
+	return new ResponseEntity<>(centros, HttpStatus.OK);
     }
     
     @Operation(summary = "Borra un Centro")
@@ -69,18 +70,18 @@ public class CentroController {
     @Operation(summary = "Muestra un Centro")
     @GetMapping("/show/{id}")
     public ResponseEntity<Centro> findById(@PathVariable Long id){
-	return new ResponseEntity<Centro>(centroService.findById(id).get(), HttpStatus.OK);
+	return new ResponseEntity<>(centroService.findById(id).get(), HttpStatus.OK);
     }
     
     @Operation(summary = "Edita un Centro")
     @PreAuthorize("hasAuthority('"+ ADMIN +"')")
-    @RequestMapping(value = "/edit",method = RequestMethod.PUT)
+    @PutMapping("/edit")
     public ResponseEntity<Centro> updateCentro(@RequestBody Centro centro){
         Centro c = null;
         try{
-            return new ResponseEntity<Centro>(centroService.addCentro(centro), HttpStatus.OK);
+            return new ResponseEntity<>(centroService.addCentro(centro), HttpStatus.OK);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<Centro>(c, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(c, HttpStatus.BAD_REQUEST);
         }
        
     }

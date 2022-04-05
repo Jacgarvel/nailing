@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface UsuarioRepository extends CrudRepository<Usuario, Serializable>{
 
     @Query("select user from Usuario user where user.usuario = ?1")
-    Usuario findByUsername(String Username);
+    Usuario findByUsername(String username);
     
     @Query("select user from Usuario user where user.usuario = ?1 AND user.contrasenya = ?2")
-    Optional<Usuario> findByUsernamePassword(String Username,String password);
+    Optional<Usuario> findByUsernamePassword(String username,String password);
 }

@@ -108,7 +108,8 @@ public class AcabadoController {
             List<Acabado> acabados = acabadoService.addAcabadoCentro(acabids);
             return new ResponseEntity<>(acabados, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<Acabado> acabados = acabadoService.addAcabadoCentro(acabids);
+            return new ResponseEntity<>(acabados, HttpStatus.BAD_REQUEST);
         }
     }
 }

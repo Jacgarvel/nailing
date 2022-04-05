@@ -1,14 +1,12 @@
 package com.nailing.app.usuario;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.nailing.app.centro.Centro;
-import com.nailing.app.centro.CentroService;
 
 
 @Service("usuarioService")
@@ -35,7 +33,7 @@ public class UsuarioService {
     }
     
     public List<Usuario> findAll(){
-        return (List) usuarioRepository.findAll();
+        return StreamSupport.stream(usuarioRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
     
     public Usuario save(Usuario usuario){

@@ -93,7 +93,8 @@ public class FormaController {
             List<Forma> formas = formaService.addFormaCentro(forids);
             return new ResponseEntity<>(formas, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<Forma> formas = formaService.addFormaCentro(forids);
+            return new ResponseEntity<>(formas, HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -87,7 +87,8 @@ public class TamanyoController {
             List<Tamanyo> tamanyos = tamService.addTamanyoCentro(tamids);
             return new ResponseEntity<>(tamanyos, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			List<Tamanyo> tamanyos = tamService.addTamanyoCentro(tamids);
+            return new ResponseEntity<>(tamanyos, HttpStatus.BAD_REQUEST);
         }
     }
 }

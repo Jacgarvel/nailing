@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,7 +78,7 @@ public class UsuarioController {
     
     @Operation(summary = "Edita un Usuario")
     @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
-    @RequestMapping(value = "/usuarios/edit",method = RequestMethod.PUT)
+    @PutMapping("/usuarios/edit")
     public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario){
         Usuario u = null;
         try{

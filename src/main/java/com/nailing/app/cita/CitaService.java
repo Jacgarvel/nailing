@@ -86,11 +86,16 @@ public class CitaService {
 		LocalDateTime horaInicio;
 		LocalDateTime horaFin;
 
-		if (ids.get("usuario") == null || ids.get("centro") == null || ids.get("precio") == null
-				|| ids.get("tiempo") == null || ids.get("fecha") == null) {
+		final String usuarioKey = "usuario";
+		final String centroKey = "centro";
+		final String tiempoKey = "tiempo";
+		final String precioKey = "precio";
+		final String fechaKey = "fecha";
+		if (ids.get(usuarioKey) == null || ids.get(centroKey) == null || ids.get(precioKey) == null
+				|| ids.get(tiempoKey) == null || ids.get(fechaKey) == null) {
 			throw new IllegalArgumentException(
-					"usuario: " + ids.get("usuario") + "; centro: " + ids.get("centro") + "; precio: "
-							+ ids.get("precio") + "; fecha: " + ids.get("fecha") + "; duracion: " + ids.get("tiempo"));
+					"usuario: " + ids.get(usuarioKey) + "; centro: " + ids.get(centroKey) + "; precio: "
+							+ ids.get(precioKey) + "; fecha: " + ids.get(fechaKey) + "; duracion: " + ids.get(tiempoKey));
 		}
 
 		if (ids.get("decoracion") != null) {
@@ -115,14 +120,14 @@ public class CitaService {
 			tipo = tipoService.findById(Long.parseLong(ids.get("tipo")));
 		}
 
-		usuario = usuarioService.findById(Long.parseLong(ids.get("usuario"))).get();
-		centro = centroService.findById(Long.parseLong(ids.get("centro"))).get();
-		precio = Double.valueOf(ids.get("precio"));
+		usuario = usuarioService.findById(Long.parseLong(ids.get(usuarioKey))).get();
+		centro = centroService.findById(Long.parseLong(ids.get(centroKey))).get();
+		precio = Double.valueOf(ids.get(precioKey));
 
 		DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		horaInicio = LocalDateTime.parse(ids.get("fecha"), dt);
+		horaInicio = LocalDateTime.parse(ids.get(fechaKey), dt);
 
-		tiempo = Integer.valueOf(ids.get("tiempo"));
+		tiempo = Integer.valueOf(ids.get(tiempoKey));
 		horaFin = horaInicio.plusMinutes(tiempo);
 
 		Cita cita = new Cita(precio, horaInicio, horaFin, decoracion, acabado, base, tipo, disenyo, tamanyo, forma,
@@ -146,7 +151,7 @@ public class CitaService {
 		Boolean apto;
 
 		for (Integer tramo : tramos) {
-			fin = inicio.plusMinutes(tramo + tiempo);
+			fin = inicio.plusMinutes(Long.valueOf(tramo) +  tiempo);
 			apto = true;
 
 //				comprobar si la cita es seleccionada en el descanso del mediodia del centro si lo tiene
@@ -158,7 +163,7 @@ public class CitaService {
 			Boolean checkApertura = centro.getAperturaAM().isAfter(inicio.toLocalTime());
 
 //			si se cumple alguna condición la cita no puede empezar a esa hora y minutos
-			if (checkMediodia || checkCierre || checkApertura) {
+			if (checkMediodia || checkCierre || Boolean.TRUE.equals(checkApertura)) {
 				apto = false;
 				continue;
 			}
@@ -168,13 +173,13 @@ public class CitaService {
 				Boolean checkCitas = (cita.getHoraInicio().isBefore(fin) && cita.getHoraFin().isAfter(inicio));
 
 //				si se cumple alguna condición la cita no puede empezar a esa hora y minutos
-				if (checkCitas) {
+				if (Boolean.TRUE.equals(checkCitas)) {
 					apto = false;
-					continue;
+					
 				}
 			}
 
-			if (apto) {
+			if (Boolean.TRUE.equals(apto)) {
 				String tramoString = tramo.toString();
 
 				if (tramo < 10) {

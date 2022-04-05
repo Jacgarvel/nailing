@@ -35,13 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public SecurityConfiguration(UserPrincipalDetailsService userPrincipalDetailsService) {
         this.userPrincipalDetailsService = userPrincipalDetailsService;
     }
-
-    /*@Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-          .withUser("usuario1").password(passwordEncoder().encode("usuario1"))
-          .roles("USER");
-    }*/
     
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {

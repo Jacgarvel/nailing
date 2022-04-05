@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author jaime
  */
 public class UserPrincipal implements UserDetails {
+    
+    
     private Usuario usuario;
 
     public UserPrincipal(Usuario usuario){

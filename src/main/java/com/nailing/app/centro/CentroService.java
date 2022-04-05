@@ -24,7 +24,6 @@ import com.nailing.app.tamanyo.TamanyoService;
 import com.nailing.app.tipo.TipoService;
 import com.nailing.app.usuario.Authorities;
 import com.nailing.app.usuario.Usuario;
-import com.nailing.app.usuario.UsuarioRepository;
 import com.nailing.app.usuario.UsuarioService;
 
 /**
@@ -106,21 +105,4 @@ public class CentroService {
         usuario.setRol(Authorities.OWNER);
     	return usuarioService.save(usuario);
     }
- 
-    /*
-    public List<Centro> findCentrosByUsuario(Long usuarioId){
-    	List<Centro> centros = centroRepository.findByUser(usuarioId);
-    	return centros;
-    }
-    
-    public void removeCentrosbyUsuario(Long usuarioId) {
-		List<Centro> centros = findCentrosByUsuario(usuarioId);
-		if(centros == null) {
-			System.out.println("No hay centros que borrar");
-		}else {
-			for (Centro c : centros) {
-				delete(c.getId());
-			}
-		}
-    }*/
 }

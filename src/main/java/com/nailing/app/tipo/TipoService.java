@@ -69,27 +69,27 @@ public class TipoService {
         Integer duracion = null;
         
         List<Tipo> result = new ArrayList<>();
-        
-        if(!(datos.get("centro") == null || datos.get("centro").isEmpty() || datos.get("centro").get(0) == null)){
-            centro = centroRepository.findById(Long.parseLong(datos.get("centro").get(0))).get();
+        final String centroKey = "centro";
+        if(!(datos.get(centroKey) == null || datos.get(centroKey).isEmpty() || datos.get(centroKey).get(0) == null)){
+            centro = centroRepository.findById(Long.parseLong(datos.get(centroKey).get(0))).get();
         }else{
-            throw new IllegalArgumentException("centro: " + datos.get("centro"));
+            throw new IllegalArgumentException("centro: " + datos.get(centroKey));
         }
-        
-        if(!(datos.get("coste") == null || datos.get("coste").isEmpty() || datos.get("coste").get(0) == null)){
-            precio = Double.valueOf(datos.get("coste").get(0));
+        final String costeKey = "coste";
+        if(!(datos.get(costeKey) == null || datos.get(costeKey).isEmpty() || datos.get(costeKey).get(0) == null)){
+            precio = Double.valueOf(datos.get(costeKey).get(0));
         }else{
             throw new IllegalArgumentException("precio: " + datos.get("precio"));
         }
-        
-        if(!(datos.get("tiempo") == null || datos.get("tiempo").isEmpty() || datos.get("tiempo").get(0) == null)){
-            duracion = Integer.valueOf(datos.get("tiempo").get(0));
+        final String tiempoKey = "tiempo";
+        if(!(datos.get(tiempoKey) == null || datos.get(tiempoKey).isEmpty() || datos.get(tiempoKey).get(0) == null)){
+            duracion = Integer.valueOf(datos.get(tiempoKey).get(0));
         }else{
-            throw new IllegalArgumentException("tiempo: " + datos.get("tiempo"));
+            throw new IllegalArgumentException("tiempo: " + datos.get(tiempoKey));
         }
-        
-        if(!(datos.get("personalizaciones") == null || datos.get("personalizaciones").isEmpty() || datos.get("personalizaciones").get(0) == null)){
-            for(String p:datos.get("personalizaciones")){
+        final String persoKey = "personalizaciones";
+        if(!(datos.get(persoKey) == null || datos.get(persoKey).isEmpty() || datos.get(persoKey).get(0) == null)){
+            for(String p:datos.get(persoKey)){
                 Tipo tipo = new Tipo(duracion,precio,Fases.bases,centro);
                 switch (p){
                     case "NATURAL":
@@ -98,6 +98,8 @@ public class TipoService {
                     case "ESCULPIDA":
                         tipo.setNombre(NombreTipo.ESCULPIDA);
                         break;
+                    default:
+                        break;
                 }
                 if(tipo.getNombre()!=null){
                     Tipo d = tiporepository.save(tipo);
@@ -105,10 +107,10 @@ public class TipoService {
                 }
             }
             if(result.isEmpty()){
-                throw new IllegalArgumentException("tipos: " + datos.get("personalizaciones"));
+                throw new IllegalArgumentException("tipos: " + datos.get(persoKey));
             }
         }else{
-            throw new IllegalArgumentException("tipos: " + datos.get("personalizaciones"));
+            throw new IllegalArgumentException("tipos: " + datos.get(persoKey));
         }
         return result;
     }

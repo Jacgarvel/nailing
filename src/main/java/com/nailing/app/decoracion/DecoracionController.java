@@ -109,7 +109,8 @@ public class DecoracionController {
             List<Decoracion> decoraciones = decoracionService.addDecoracionCentro(decids);
             return new ResponseEntity<>(decoraciones, HttpStatus.CREATED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            List<Decoracion> decoraciones = decoracionService.addDecoracionCentro(decids);
+            return new ResponseEntity<>(decoraciones, HttpStatus.BAD_REQUEST);
         }
     }
 }
