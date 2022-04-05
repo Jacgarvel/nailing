@@ -4,6 +4,8 @@
  */
 package com.nailing.app.cita;
 
+import static com.nailing.app.usuario.AuthoritiesConstants.*;
+
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -12,6 +14,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +41,7 @@ public class CitaController {
 	CitaService citaService;
 
 	@Operation(summary = "Lista todas las Citas")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"')")
 	@GetMapping("/list")
 	public ResponseEntity<List<Cita>> listUnyas() {
 		List<Cita> unyas = StreamSupport.stream(citaService.findAll().spliterator(), false)
@@ -46,6 +50,7 @@ public class CitaController {
 	}
 
 	@Operation(summary = "Muestra una Cita")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"')")
 	@GetMapping("/show/{id}")
 	public ResponseEntity<Cita> showUnya(@PathVariable Long id) {
 		try {
@@ -57,6 +62,7 @@ public class CitaController {
 	}
 
 	@Operation(summary = "Muesta una Cita asociada a un Usuario")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<List<Cita>> citaByUser(@PathVariable Long userId) {
 		List<Cita> citas = citaService.findByUsuario(userId);
@@ -64,18 +70,21 @@ public class CitaController {
 	}
 
 	@Operation(summary = "Borra una Cita")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"')")
 	@DeleteMapping("/delete/{id}")
 	public void deleteUnya(@PathVariable Long id) {
 		citaService.removeUnya(id);
 	}
 
 	@Operation(summary = "Borra una Cita asociada a un usuario")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
 	@DeleteMapping("/user/{userId}/delete/{citaId}")
 	public void deleteUnya(@PathVariable Long userId, @PathVariable Long citaId) {
 		citaService.removeCitaByUser(userId, citaId);
 	}
 
 	@Operation(summary = "Añade una Cita")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
 	@PostMapping("/add")
 	public ResponseEntity<Cita> addCita(@RequestBody Map<String, String> ids) {
 		Cita cita = null;
@@ -88,6 +97,7 @@ public class CitaController {
 	}
 
 	@Operation(summary = "Devuelve la hora de una Cita")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
 	@GetMapping("/check/{centroId}")
 	public ResponseEntity<List<String>> checkDisponibles(@PathVariable Long centroId,
 														@RequestParam(name = "fecha", required = true) String fecha,

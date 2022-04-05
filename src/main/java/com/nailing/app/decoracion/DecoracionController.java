@@ -4,6 +4,8 @@
  */
 package com.nailing.app.decoracion;
 
+import static com.nailing.app.usuario.AuthoritiesConstants.*;
+
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -12,6 +14,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +40,7 @@ public class DecoracionController {
     DecoracionService decoracionService;
     
     @Operation(summary = "Añade una Decoracion")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @PostMapping("/add")
     public ResponseEntity<Decoracion> addDecoracion(@RequestBody Decoracion decoracion){
         Decoracion deco = decoracionService.addDecoracion(decoracion);
@@ -46,12 +50,14 @@ public class DecoracionController {
     }
     
     @Operation(summary = "Borra una Decoracion")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @DeleteMapping("/delete/{id}")
     public void deleteDecoracion(@PathVariable Long id){
         decoracionService.removeDecoracion(id);
     }
     
     @Operation(summary = "Muestra una Decoracion")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/show/{id}")
     public ResponseEntity<Decoracion> showDecoracion(@PathVariable Long id){
         try{
@@ -63,6 +69,7 @@ public class DecoracionController {
     }
     
     @Operation(summary = "Lista todas las Decoraciones")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
     @GetMapping("/list")
     public ResponseEntity<List<Decoracion>> listDecoraciones(){
         List<Decoracion> decos = StreamSupport.stream(decoracionService.findAll()
@@ -71,6 +78,7 @@ public class DecoracionController {
     }
     
     @Operation(summary = "Muestra Decoraciones en funcion de Centro y Diseño")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
     @GetMapping("{disenyoId}/centro/{centroId}")
     public ResponseEntity<List<Decoracion>> decoracionesByCentroDisenyo(@PathVariable Long disenyoId, @PathVariable Long centroId){
         List<Decoracion> decoraciones = decoracionService.findDecoracionByCentroDisenyo(disenyoId, centroId);
@@ -78,6 +86,7 @@ public class DecoracionController {
     }
     
     @Operation(summary = "Muestra las posibles Decoraciones")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/all")
     public ResponseEntity<List<String>> listPosibleDecoracion(){
         List<String> decoraciones = decoracionService.listPosibleDecoracion();
@@ -85,6 +94,7 @@ public class DecoracionController {
     }
 
     @Operation(summary = "Lista todas las Decoraciones de un Centro")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/centro/{centroId}/list")
     public ResponseEntity<List<Decoracion>> listByCentro(@PathVariable Long centroId){
         List<Decoracion> decoraciones = decoracionService.findByCentro(centroId);
@@ -92,6 +102,7 @@ public class DecoracionController {
     }
 
     @Operation(summary = "Añade una Decoracion a un Centro")
+    @PreAuthorize("hasAuthority('"+ OWNER +"')")
     @PostMapping("/add/centro")
     public ResponseEntity<List<Decoracion>> addDecoracionCentro(@RequestBody Map<String,List<String>> decids){
         try{

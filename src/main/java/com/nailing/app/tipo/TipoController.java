@@ -4,11 +4,14 @@
  */
 package com.nailing.app.tipo;
 
+import static com.nailing.app.usuario.AuthoritiesConstants.*;
+
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +37,7 @@ public class TipoController {
     TipoService tipoService;
     
     @Operation(summary = "Lista todos los Tipos")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
     @GetMapping("/list")
     public ResponseEntity<List<Tipo>> listTipos(){
         List<Tipo> tipos = (List<Tipo>) tipoService.findAll();
@@ -41,18 +45,21 @@ public class TipoController {
     }
     
     @Operation(summary = "Borra un Tipo")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @DeleteMapping("/delete/{id}")
 	public void deleteTipo(@PathVariable Long id) {
 		tipoService.removeTipo(id);
 	}
     
     @Operation(summary = "Muestra un Tipo")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/show/{id}")
 	public ResponseEntity<Tipo> showTipo(@PathVariable Long id){
 		return new ResponseEntity<>(tipoService.findById(id), HttpStatus.OK);
 	}
 
     @Operation(summary = "Lista Tipos en funcion de Centro")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
     @GetMapping("/centro/{centroId}")
 	public  ResponseEntity<List<Tipo>> findByCentro(@PathVariable Long centroId){
 		List<Tipo> tipos = tipoService.findByCentro(centroId);
@@ -60,6 +67,7 @@ public class TipoController {
 	}
 
     @Operation(summary = "Lista todos los posibles Tipos")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/all")
     public ResponseEntity<List<String>> listPosibleTipo(){
         List<String> tipos = tipoService.listPosibleTipo();
@@ -67,6 +75,7 @@ public class TipoController {
     }
 
     @Operation(summary = "Lista Todos los Tipos de un Centro")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/centro/{centroId}/list")
     public ResponseEntity<List<Tipo>> listByCentro(@PathVariable Long centroId){
         List<Tipo> tipos = tipoService.listByCentro(centroId);
@@ -74,6 +83,7 @@ public class TipoController {
     }
     
     @Operation(summary = "Añade un Tipo a un Centro")
+    @PreAuthorize("hasAuthority('"+ OWNER +"')")
     @PostMapping("/add/centro")
     public ResponseEntity<List<Tipo>> addTamanyoCentro(@RequestBody Map<String,List<String>> tipids){
         try{

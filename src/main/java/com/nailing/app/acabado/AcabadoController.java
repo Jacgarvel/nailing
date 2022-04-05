@@ -12,6 +12,7 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.nailing.app.usuario.AuthoritiesConstants.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -37,6 +40,7 @@ public class AcabadoController {
     AcabadoService acabadoService;
     
     @Operation(summary = "Añade un Acabado")
+    @PreAuthorize("hasAuthority('"+ OWNER +"') or hasAuthority('"+ ADMIN +"')")
     @PostMapping("/add")
     public ResponseEntity<Acabado> addAcabado(@RequestBody Acabado acabado){
         Acabado acab = acabadoService.addAcabado(acabado);
@@ -46,12 +50,14 @@ public class AcabadoController {
     }
     
     @Operation(summary = "Elimina un Acabado")
+    @PreAuthorize("hasAuthority('"+ OWNER +"') or hasAuthority('"+ ADMIN +"')")
     @DeleteMapping("/delete/{id}")
     public void deleteAcabado(@PathVariable Long id){
         acabadoService.removeAcabado(id);
     }
     
     @Operation(summary = "Muestra un Acabado")
+    @PreAuthorize("hasAuthority('"+ OWNER +"') or hasAuthority('"+ ADMIN +"')")
     @GetMapping("/show/{id}")
     public ResponseEntity<Acabado> showAcabado(@PathVariable Long id){
         try{
@@ -63,6 +69,7 @@ public class AcabadoController {
     }
     
     @Operation(summary = "Lista todos los Acabdos")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
     @GetMapping("/list")
     public ResponseEntity<List<Acabado>> listAcabado(){
         List<Acabado> acabados = StreamSupport.stream(acabadoService.findAll().spliterator(), false).collect(Collectors.toList());
@@ -70,6 +77,7 @@ public class AcabadoController {
     }
     
     @Operation(summary = "Muestra Acabados en funcion de Centro y Decoracion")
+    @PreAuthorize("hasAuthority('"+ USER +"') or hasAuthority('"+ ADMIN +"')")
     @GetMapping("/{decoracionId}/centro/{centroId}")
     public ResponseEntity<List<Acabado>> acabadosByCentro(@PathVariable Long centroId){
         List<Acabado> acabados = acabadoService.findAcabadoByCentro(centroId);
@@ -77,6 +85,7 @@ public class AcabadoController {
     }
     
     @Operation(summary = "Muestra los posibles Acabados")
+    @PreAuthorize("hasAuthority('"+ OWNER +"') or hasAuthority('"+ ADMIN +"')")
     @GetMapping("/all")
     public ResponseEntity<List<String>> listPosibleAcabado(){
         List<String> acabados = acabadoService.listPosibleAcabado();
@@ -84,6 +93,7 @@ public class AcabadoController {
     }
 
     @Operation(summary = "Muestra los Acabados asociados a un Centro")
+    @PreAuthorize("hasAuthority('"+ OWNER +"') or hasAuthority('"+ ADMIN +"')")
     @GetMapping("/centro/{centroId}/list")
     public ResponseEntity<List<Acabado>> listByCentro(@PathVariable Long centroId){
         List<Acabado> acabados = acabadoService.findByCentro(centroId);
@@ -91,6 +101,7 @@ public class AcabadoController {
     }
     
     @Operation(summary = "Asocia un Acabado a un Centro")
+    @PreAuthorize("hasAuthority('"+ OWNER +"')")
     @PostMapping("/add/centro")
     public ResponseEntity<List<Acabado>> addAcabadoCentro(@RequestBody Map<String,List<String>> acabids){
         try{

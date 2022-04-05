@@ -1,11 +1,14 @@
 package com.nailing.app.tamanyo;
 
+import static com.nailing.app.usuario.AuthoritiesConstants.*;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,7 @@ public class TamanyoController {
 		
 //	mostrar todos los tamaños existentes en la base de datos
 	@Operation(summary = "Lista todos los Tamaños")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"')")
 	@GetMapping("/list")
 	public ResponseEntity<List<Tamanyo>> listTamanyos(){
 		List<Tamanyo> tams = tamService.findAll();
@@ -37,6 +41,7 @@ public class TamanyoController {
 	
 //	borrar un tamaño por su ID
 	@Operation(summary = "Borra un Tamaño")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
 	@DeleteMapping("/delete/{id}")
 	public void deleteBase(@PathVariable Long id) {
 		tamService.removeTamanyo(id);
@@ -44,12 +49,14 @@ public class TamanyoController {
 	
 //	encontrar un tamanyo por su ID
 	@Operation(summary = "Muestra un Tamaño")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
 	@GetMapping("/show/{id}")
 	public ResponseEntity<Tamanyo> showTamanyo(@PathVariable Long id){
 		return new ResponseEntity<>(tamService.findById(id), HttpStatus.OK);
 	}
 	
 	@Operation(summary = "Muestra Tamaños en funcion de Centro y Forma")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
 	@GetMapping("/{formaId}/centro/{centroId}")
 	public  ResponseEntity<List<Tamanyo>> tamanyosByCentroForma(@PathVariable Long formaId, @PathVariable Long centroId){
 		List<Tamanyo> tams = tamService.findTamanyosByCentroForma(formaId, centroId);
@@ -57,6 +64,7 @@ public class TamanyoController {
 	}
     
 	@Operation(summary = "Muestra todos los Tamaños")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/all")
     public ResponseEntity<List<String>> listPosibleTamanyo(){
         List<String> tamanyos = tamService.listPosibleTamanyo();
@@ -64,6 +72,7 @@ public class TamanyoController {
     }
 
 	@Operation(summary = "Lista todos los Tamaños de un Centro")
+	@PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
 	@GetMapping("/centro/{centroId}/list")
 	public ResponseEntity<List<Tamanyo>> listByCentro(@PathVariable Long centroId){
 		List<Tamanyo> tamanyos = tamService.findByCentro(centroId);
@@ -71,6 +80,7 @@ public class TamanyoController {
 	}
     
 	@Operation(summary = "Añade un Tamaño a un Centro")
+	@PreAuthorize("hasAuthority('"+ OWNER +"')")
     @PostMapping("/add/centro")
     public ResponseEntity<List<Tamanyo>> addTamanyoCentro(@RequestBody Map<String,List<String>> tamids){
         try{

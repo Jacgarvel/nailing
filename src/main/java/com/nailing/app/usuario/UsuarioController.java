@@ -1,11 +1,15 @@
 package com.nailing.app.usuario;
 
 import com.nailing.app.securityConfiguration.DbInit;
+
+import static com.nailing.app.usuario.AuthoritiesConstants.*;
+
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +55,7 @@ public class UsuarioController {
     }
 
     @Operation(summary = "Lista todos los Usuarios")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
     @GetMapping("/usuarios/list")
     public ResponseEntity<List<Usuario>> listUsuarios(){
         List<Usuario> usuarios = usuarioSer.findAll();
@@ -58,18 +63,21 @@ public class UsuarioController {
     }
     
     @Operation(summary = "Borra un Usuario")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
     @DeleteMapping("/usuarios/delete/{id}")
     public void deleteUsuario(@PathVariable Long id) {
         usuarioSer.removeUsuario(id);
     }
     
     @Operation(summary = "Muestra un Usuario")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
     @GetMapping("/usuarios/show/{id}")
     public ResponseEntity<Usuario> showUsuario(@PathVariable Long id){
         return new ResponseEntity<>(usuarioSer.findById(id).get(), HttpStatus.OK);
     }
     
     @Operation(summary = "Edita un Usuario")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
     @RequestMapping(value = "/usuarios/edit",method = RequestMethod.PUT)
     public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario){
         Usuario u = null;

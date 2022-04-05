@@ -22,6 +22,7 @@ import com.nailing.app.forma.FormaService;
 import com.nailing.app.securityConfiguration.DbInit;
 import com.nailing.app.tamanyo.TamanyoService;
 import com.nailing.app.tipo.TipoService;
+import com.nailing.app.usuario.Authorities;
 import com.nailing.app.usuario.Usuario;
 import com.nailing.app.usuario.UsuarioRepository;
 import com.nailing.app.usuario.UsuarioService;
@@ -102,7 +103,7 @@ public class CentroService {
     public Usuario asociarCentroUsuario(Usuario usuario, Centro centro) {
     	Centro cent = addCentro(centro);
     	usuario.setCentro(cent);
-        usuario.setRol("OWNER");
+        usuario.setRol(Authorities.OWNER);
     	return usuarioService.save(usuario);
     }
  

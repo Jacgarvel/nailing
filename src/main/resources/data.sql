@@ -11,6 +11,7 @@ ALTER SEQUENCE decoracion_id_seq RESTART WITH 55;
 ALTER SEQUENCE acabado_id_seq RESTART WITH 7;
 ALTER SEQUENCE centro_id_seq RESTART WITH 4;
 
+DELETE FROM usuario;
 DELETE FROM cita;
 DELETE FROM usuario;
 DELETE FROM tipo;
@@ -23,9 +24,9 @@ DELETE FROM acabado;
 DELETE FROM centro;
  
 ------------------------------------------CENTROS---------------------------------------------
-INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (1, '09:00:00','13:00:00','16:00:00','21:00:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=U%C3%B1as+Pepa', 'Uñas Pepa', 'Málaga',0);
-INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (2, '08:30:00','13:00:00','16:00:00','20:30:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=Nails+Factory', 'Nails Factory', 'Sevilla',2);
-INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (3, '09:30:00','13:00:00','16:00:00','21:30:00', 'https://dummyimage.com/600x400/b061cf/ffffff.png&text=Mafalda', 'Mafalda Salón de Belleza', 'Cádiz',3);
+INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (1, '09:00:00','13:00:00','16:00:00','21:00:00', 'https://ibb.co/bzRTjBN', 'Nails by Claudia', 'Málaga',0);
+INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (2, '08:30:00','13:00:00','16:00:00','20:30:00', 'https://ibb.co/CMHYKPx', 'Más guapa que la novia', 'Sevilla',2);
+INSERT INTO centro (id, apertura_am, cierre_am, apertura_pm, cierre_pm, imagen, nombre, provincia, suscripcion) VALUES (3, '09:30:00','13:00:00','16:00:00','21:30:00', 'https://ibb.co/Bf2FVV9', 'Nails by Verónica', 'Cádiz',3);
 
 ----------------------------------------------TIPOS----------------------------------------------
 --CENTRO 1--

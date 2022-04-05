@@ -15,7 +15,7 @@ import com.nailing.app.centro.CentroService;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;  
+    private UsuarioRepository usuarioRepository;
     
     //encontrar usuario por su id
     public Optional<Usuario> findById(Long id) {
