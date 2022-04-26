@@ -27,7 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 
 @SpringBootTest(classes = AppApplication.class)
-public class CentroTestService {
+public class CentroServiceTest {
     
     @Autowired
     private CentroService centroService;
@@ -74,7 +74,7 @@ public class CentroTestService {
     @Test
     public void ShouldUpdateImage(){
         centroService.updateCentroImage(1L, "https://uridetest.com");
-        assertEquals(centroService.findById(1L).get().getImagen(),"https://uridetest.com");
+        assertEquals("https://uridetest.com",centroService.findById(1L).get().getImagen());
     }
     
 }

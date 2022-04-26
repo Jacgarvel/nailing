@@ -123,22 +123,20 @@ public class CentroService {
     			throw new IllegalArgumentException();
     		}
 	    		
-        	if(!(centroTieneCambios(centro)==true)) {
-        		if(!(centro.getPagado()== false)) {
-		        	centro.setUltimaSuscripcion(LocalDate.now());
-		        	if(centro.getSuscripcion() == Suscripcion.BASIC){
-		        		centro.setCreditosrestantes(150);
-		        	}
-		        	else if(centro.getSuscripcion() == Suscripcion.MEDIUM){
-		        		centro.setCreditosrestantes(200);
-		        	}
-		        	else if(centro.getSuscripcion() == Suscripcion.ADVANCED){
-		        		centro.setCreditosrestantes(300);
-		        	}
-		        	else if(centro.getSuscripcion() == Suscripcion.PREMIUM){
-		        		centro.setCreditosrestantes(400);
-		        	}
-        		}    
+        	if(Boolean.TRUE.equals(!centroTieneCambios(centro)) && Boolean.TRUE.equals(centro.getPagado())) {
+				centro.setUltimaSuscripcion(LocalDate.now());
+				if(centro.getSuscripcion() == Suscripcion.BASIC){
+					centro.setCreditosrestantes(150);
+				}
+				else if(centro.getSuscripcion() == Suscripcion.MEDIUM){
+					centro.setCreditosrestantes(200);
+				}
+				else if(centro.getSuscripcion() == Suscripcion.ADVANCED){
+					centro.setCreditosrestantes(300);
+				}
+				else if(centro.getSuscripcion() == Suscripcion.PREMIUM){
+					centro.setCreditosrestantes(400);
+				} 
         	}
                 if(centro.getAperturaAM().isAfter(centro.getCierreAM()) || centro.getAperturaPM().isAfter(centro.getCierrePM()) 
                         || centro.getAperturaAM().isAfter(centro.getAperturaPM()) || centro.getAperturaPM().isBefore(centro.getCierreAM())){
@@ -168,36 +166,21 @@ public class CentroService {
         usuario.setRol(Authorities.OWNER);
     	return usuarioService.save(usuario);
     }
-   private Boolean centroTieneCambios(Centro centro) {
-	   List<Centro> centros = findAll();
-	   Boolean result = false;
-	   for(Centro c: centros) {
-		   if(c.getId() == centro.getId()) {
-			   if(c.getNombre() != c.getNombre()) {
-				   result = true;
-				   
-			   }
-			   else if(c.getImagen() != centro.getImagen()) {
-				   result = true;
-				  
-			   }
-			   else if(c.getAperturaAM() != centro.getAperturaAM()) {
-				   result = true;
-				 
-			   }
-			   else if(c.getAperturaPM() != centro.getAperturaPM()) {
-				   result = true;
-			   }
-			   else if(c.getCierreAM() != centro.getCierreAM()) {
-				   result = true;
-			   }
-			   else if(c.getCierrePM() != centro.getCierrePM()) {
-				   result = true;
-			   }
-		   }
-	   }
-	   return result;
-   }
+	private Boolean centroTieneCambios(Centro centro) {
+		List<Centro> centros = findAll();
+		Boolean result = false;
+		for(Centro c: centros) {
+			if(c.getId().equals(centro.getId()) && 
+			(!centro.getNombre().equals(c.getNombre()) ||
+			c.getImagen().equals(centro.getImagen()) ||
+			c.getAperturaAM().equals(centro.getAperturaAM()) ||
+			c.getAperturaPM().equals(centro.getAperturaPM()) || c.getCierreAM().equals(centro.getCierreAM()) ||
+			c.getCierrePM().equals(centro.getCierrePM()))) {
+				result = true;
+			}
+		}
+		return result;
+	}
    
    public Centro updateCentroImage(long idCentro, String uri) {
 	   Optional<Centro> centro = findById(idCentro);

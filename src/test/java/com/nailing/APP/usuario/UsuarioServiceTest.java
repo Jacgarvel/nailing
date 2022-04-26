@@ -2,6 +2,7 @@ package com.nailing.APP.usuario;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -86,7 +87,7 @@ public class UsuarioServiceTest {
 	@Test
 	public void findByUserNameNegativeTest() {
 		Usuario usuarioObtenido = usuarioService.findByUsuario("NotAnUserName");
-		assertTrue(usuarioObtenido == null);
+		assertNull(usuarioObtenido);
 	}
 	
 	@Test

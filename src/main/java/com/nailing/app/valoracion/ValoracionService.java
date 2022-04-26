@@ -37,11 +37,13 @@ public class ValoracionService {
         Centro centro = null;
         Usuario usuario = null;
         Valoracion valoracion = null;
-        
-        if(valoraciones.get("valoracionUsuario") != null && valoraciones.get("centro") != null && valoraciones.get("usuario") != null){
-            valoracionUsuario = Integer.valueOf(valoraciones.get("valoracionUsuario"));
-            centro = centroRepository.findById(Long.parseLong(valoraciones.get("centro"))).get();
-            usuario = usuarioRepository.findById(Long.parseLong(valoraciones.get("usuario"))).get();
+        final String valUser = "valoracionUsuario";
+        final String centroString = "centro";
+        final String usuarioString = "usuario";
+        if(valoraciones.get(valUser) != null && valoraciones.get(centroString) != null && valoraciones.get(usuarioString) != null){
+            valoracionUsuario = Integer.valueOf(valoraciones.get(valUser));
+            centro = centroRepository.findById(Long.parseLong(valoraciones.get(centroString))).get();
+            usuario = usuarioRepository.findById(Long.parseLong(valoraciones.get(usuarioString))).get();
             centro.setNumValoraciones(centro.getNumValoraciones()+1);
             centro.setValoracionTotal(centro.getValoracionTotal() + valoracionUsuario);
             Double media = Double.valueOf(centro.getValoracionTotal()) / centro.getNumValoraciones();
@@ -49,8 +51,8 @@ public class ValoracionService {
             centroRepository.save(centro);
             valoracion = new Valoracion(valoracionUsuario, centro, usuario);
         }else{
-            throw new IllegalArgumentException( "valoracion usuario: "+ valoraciones.get("valoracionUsuario")+ "; centro: "+ valoraciones.get("centro") 
-                    + "; usuario: "+ valoraciones.get("usuario"));
+            throw new IllegalArgumentException( "valoracion usuario: "+ valoraciones.get(valUser)+ "; centro: "+ valoraciones.get(centroString) 
+                    + "; usuario: "+ valoraciones.get(usuarioString));
         
         }
         return valoracionRepository.save(valoracion);

@@ -4,7 +4,6 @@
  */
 package com.nailing.app.valoracion;
 
-import com.nailing.app.tamanyo.Tamanyo;
 import static com.nailing.app.usuario.AuthoritiesConstants.ADMIN;
 import static com.nailing.app.usuario.AuthoritiesConstants.OWNER;
 import static com.nailing.app.usuario.AuthoritiesConstants.USER;

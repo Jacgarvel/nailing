@@ -27,14 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppApplication.class)
-public class CitaServiceTests {
+public class CitaServiceTest {
     
     @Autowired
     private CitaService citaService;
     
     @Test
     public void shouldFindById(){
-        assertEquals(citaService.findById(1L).getId(),1L);
+        assertEquals(1L,citaService.findById(1L).getId());
     }
     
     @Test
@@ -50,7 +50,7 @@ public class CitaServiceTests {
             nc++;
         }
         
-        Map<String,String> cita = new HashMap();
+        Map<String,String> cita = new HashMap<>();
         cita.put("usuario", "1");
         cita.put("centro", "1");
         cita.put("precio", "50.2");

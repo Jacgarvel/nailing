@@ -12,8 +12,6 @@ import java.util.NoSuchElementException;
 
 import javax.validation.ConstraintViolationException;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +32,7 @@ import com.nailing.app.forma.NombreForma;
 
 
 @SpringBootTest(classes = AppApplication.class)
-public class FormaTestService {
+public class FormaServiceTest {
 
 	@Autowired
 	private FormaService formaSer;

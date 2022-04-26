@@ -15,7 +15,6 @@ import com.nailing.app.components.Fases;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.AfterEach;
@@ -31,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.Validator;
 
 @SpringBootTest(classes = AppApplication.class)
-public class BaseTestService {
+public class BaseServiceTest {
     
     
         @Autowired
