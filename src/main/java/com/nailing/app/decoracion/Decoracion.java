@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Positive;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.lang.NonNull;
 
 /**
  *
@@ -33,6 +34,7 @@ public class Decoracion {
     private Long id;
     
     @Column(name = "nombre")
+    @NonNull
     private NombreDecoracion nombre;
     
     @Column(name = "tiempo")
@@ -44,6 +46,7 @@ public class Decoracion {
     private Double coste;
     
     @Column(name = "siguiente_fase")
+    @NonNull
     private Fases siguienteFase;
     
     @ManyToOne

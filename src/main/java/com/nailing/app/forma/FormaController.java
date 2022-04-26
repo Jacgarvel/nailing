@@ -81,7 +81,7 @@ public class FormaController {
     @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @GetMapping("/centro/{centroId}/list")
     public ResponseEntity<List<Forma>> listByCentro(@PathVariable Long centroId){
-        List<Forma> formas = formaService.findByCentro(centroId);
+        List<Forma> formas = formaService.findFormasByCentroBase(centroId);
         return new ResponseEntity<>(formas,HttpStatus.OK);
     }
     

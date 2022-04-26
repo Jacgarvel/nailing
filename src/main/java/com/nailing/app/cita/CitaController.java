@@ -73,7 +73,7 @@ public class CitaController {
 	@PreAuthorize("hasAuthority('"+ ADMIN +"')")
 	@DeleteMapping("/delete/{id}")
 	public void deleteUnya(@PathVariable Long id) {
-		citaService.removeUnya(id);
+		citaService.removeCita(id);
 	}
 
 	@Operation(summary = "Borra una Cita asociada a un usuario")

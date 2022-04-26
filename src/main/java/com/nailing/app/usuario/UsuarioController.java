@@ -77,7 +77,7 @@ public class UsuarioController {
     }
     
     @Operation(summary = "Edita un Usuario")
-    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"')")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ USER +"') or hasAuthority('"+ OWNER +"')")
     @PutMapping("/usuarios/edit")
     public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario){
         Usuario u = null;

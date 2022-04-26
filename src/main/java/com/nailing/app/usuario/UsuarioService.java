@@ -1,5 +1,8 @@
 package com.nailing.app.usuario;
 
+import com.nailing.app.centro.CentroService;
+import com.nailing.app.valoracion.Valoracion;
+import com.nailing.app.valoracion.ValoracionService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,6 +18,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     
+    @Autowired
+    private ValoracionService valoracionService;
+    
     //encontrar usuario por su id
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
@@ -28,6 +34,11 @@ public class UsuarioService {
     public void removeUsuario(Long id) {
         Optional<Usuario> usuario = findById(id);
         if(usuario.isPresent()){
+            for(Valoracion v : valoracionService.findAll()) {
+        		if (v.getUsuario().equals(usuario.get())) {
+        			valoracionService.delete(v);
+        		}
+         	}
             usuarioRepository.delete(usuario.get());
         }
     }
