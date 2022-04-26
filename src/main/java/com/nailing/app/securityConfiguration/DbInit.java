@@ -55,14 +55,14 @@ public class DbInit implements CommandLineRunner {
         this.usuarioRepository.deleteAll();
 
         // Crete users
-        Usuario usuario1 = new Usuario("usuario1",passwordEncoder.encode("usuario1"),"email@email.com","555555555",Authorities.USER);
-        Usuario usuario2 = new Usuario("usuario2",passwordEncoder.encode("usuario2"),"email2@email.com","55556555",Authorities.ADMIN);
+        Usuario usuario1 = new Usuario("usuario1",passwordEncoder.encode("usuario1"),"email1@email.com","555555555",Authorities.USER);
+        Usuario usuario2 = new Usuario("usuario2",passwordEncoder.encode("usuario2"),"email2@email.com","555565555",Authorities.ADMIN);
         Usuario usuario3 = new Usuario("usuario3",passwordEncoder.encode("usuario3"),"email3@email.com","555565585",Authorities.OWNER,centroRep.findById((long)1).get());
         Usuario usuario4 = new Usuario("usuario4",passwordEncoder.encode("usuario4"),"email4@email.com","555565589",Authorities.OWNER,centroRep.findById((long)2).get());
         Usuario usuario5 = new Usuario("usuario5",passwordEncoder.encode("usuario5"),"email5@email.com","655565589",Authorities.OWNER,centroRep.findById((long)3).get());
-        Usuario usuario6 = new Usuario("usuario6",passwordEncoder.encode("usuario6"),"email5@email.com","655565589",Authorities.OWNER,centroRep.findById((long)4).get());
-        Usuario usuario7 = new Usuario("usuario7",passwordEncoder.encode("usuario7"),"email5@email.com","655565589",Authorities.OWNER,centroRep.findById((long)5).get());
-        Usuario usuario8 = new Usuario("usuario8",passwordEncoder.encode("usuario8"),"email5@email.com","655565589",Authorities.OWNER,centroRep.findById((long)6).get());
+        Usuario usuario6 = new Usuario("usuario6",passwordEncoder.encode("usuario6"),"email6@email.com","655565588",Authorities.OWNER,centroRep.findById((long)4).get());
+        Usuario usuario7 = new Usuario("usuario7",passwordEncoder.encode("usuario7"),"email7@email.com","655565587",Authorities.OWNER,centroRep.findById((long)5).get());
+        Usuario usuario8 = new Usuario("usuario8",passwordEncoder.encode("usuario8"),"email8@email.com","655565586",Authorities.OWNER,centroRep.findById((long)6).get());
         List<Usuario> users = Arrays.asList(usuario1,usuario2,usuario3,usuario4,usuario5,usuario6,usuario7,usuario8);
 
         // Save to db

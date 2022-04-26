@@ -30,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.Validator;
 
 @SpringBootTest(classes = AppApplication.class)
-public class AcabadoTestService {
+public class AcabadoServiceTest {
     
         @Autowired
 	private AcabadoService acabadoService;

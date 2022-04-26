@@ -8,12 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import javax.validation.ConstraintViolationException;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,16 +22,13 @@ import com.nailing.app.centro.Centro;
 import com.nailing.app.centro.CentroService;
 import com.nailing.app.centro.Suscripcion;
 import com.nailing.app.components.Fases;
-import com.nailing.app.forma.Forma;
-import com.nailing.app.forma.FormaService;
-import com.nailing.app.forma.NombreForma;
 import com.nailing.app.tamanyo.NombreTamanyo;
 import com.nailing.app.tamanyo.Tamanyo;
 import com.nailing.app.tamanyo.TamanyoService;
 
 
 @SpringBootTest(classes = AppApplication.class)
-public class TamayoTestService {
+public class TamayoServiceTest {
 
 	@Autowired
 	private TamanyoService tamanyoSer;
@@ -120,7 +114,7 @@ public class TamayoTestService {
 		tamanyo.setSiguienteFase(Fases.disenyos);
 		tamanyo.setTiempo(30);
 		Tamanyo tamanyoAnanido = tamanyoSer.addTamanyo(tamanyo);
-		assertTrue(tamanyoSer.findById(tamanyoAnanido.getId()+1) == null);
+		assertNull(tamanyoSer.findById(tamanyoAnanido.getId()+1));
 	}
 	//Se comprueba que una vez añadida el nuevo tamanyo esta se lista junto con las otras
 	@Test
@@ -148,7 +142,6 @@ public class TamayoTestService {
 		tamanyo.setTiempo(30);
 		Tamanyo tamanyoAnanido = tamanyoSer.addTamanyo(tamanyo);
 		this.tamanyoSer.removeTamanyo(tamanyoAnanido.getId());
-		List<Tamanyo> tamanyosObtenidos = tamanyoSer.findAll();
 		assertFalse(tamanyoSer.findAll().contains(tamanyoAnanido));
 	}
 	//Se comprueba que los tamanyos que se introduce con un centro asociado se puede encontrar en base a ese centro

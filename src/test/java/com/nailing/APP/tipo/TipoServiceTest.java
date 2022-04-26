@@ -165,7 +165,7 @@ public class TipoServiceTest {
 	@Test
 	public void listPosibleTipoTest() {
 		List<String> tipos = tipoService.listPosibleTipo();
-		assertTrue(tipos.size() == 2);
+		assertEquals(2, tipos.size());
 		assertTrue(tipos.contains(NombreTipo.NATURAL.toString()));
 		assertTrue(tipos.contains(NombreTipo.ESCULPIDA.toString()));
 	}

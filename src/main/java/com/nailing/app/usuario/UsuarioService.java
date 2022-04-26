@@ -1,6 +1,5 @@
 package com.nailing.app.usuario;
 
-import com.nailing.app.centro.CentroService;
 import com.nailing.app.valoracion.Valoracion;
 import com.nailing.app.valoracion.ValoracionService;
 import java.util.List;
