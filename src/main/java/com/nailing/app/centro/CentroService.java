@@ -4,6 +4,8 @@
  */
 package com.nailing.app.centro;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +27,8 @@ import com.nailing.app.tipo.TipoService;
 import com.nailing.app.usuario.Authorities;
 import com.nailing.app.usuario.Usuario;
 import com.nailing.app.usuario.UsuarioService;
+import com.nailing.app.valoracion.Valoracion;
+import com.nailing.app.valoracion.ValoracionService;
 
 /**
  *
@@ -53,9 +57,15 @@ public class CentroService {
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
+    private ValoracionService valoracionService;
+    @Autowired
     public DbInit encoder;
     public Optional<Centro> findById(Long id){
         return centroRepository.findById(id);
+    }
+    
+    public Centro save(Centro centro){
+        return centroRepository.save(centro);
     }
     
     public List<Centro> findAll(){
@@ -83,20 +93,73 @@ public class CentroService {
         	tamSer.removeTamanyobyCentro(id);
         	tipoSer.removeTiposbyCentro(id);
         	for(Usuario u : usuarioService.findAll()) {
-        		if (u.getCentro() == centro.get()) {
+        		if (centro.get().equals(u.getCentro())) {
         			u.setCentro(null);
+                    usuarioService.save(u);
+        		}
+         	}
+                for(Valoracion v : valoracionService.findAll()) {
+        		if (centro.get().equals(v.getCentro())) {
+        			valoracionService.delete(v);
         		}
          	}
             centroRepository.delete(centro.get());
         }
     }
   
-    public Centro addCentro(Centro centro) {
-        if(centro != null){
-            return centroRepository.save(centro);
+    public Centro addCentro(Centro centro) {    	
+        if(centro != null && centro.getDiasDisponible() != null){
+    		try
+    		{
+	        	String[] dias = centro.getDiasDisponible().replaceAll("\\s+","").toUpperCase().split(",");
+	    		for(String d: dias) 
+	    		{
+	    			DayOfWeek.valueOf(d);
+	    		}
+	    		centro.setDiasDisponible(centro.getDiasDisponible().replaceAll("\\s+","").toUpperCase());
+    		}
+    		catch(Exception e)
+    		{
+    			throw new IllegalArgumentException();
+    		}
+	    		
+        	if(!(centroTieneCambios(centro)==true)) {
+        		if(!(centro.getPagado()== false)) {
+		        	centro.setUltimaSuscripcion(LocalDate.now());
+		        	if(centro.getSuscripcion() == Suscripcion.BASIC){
+		        		centro.setCreditosrestantes(150);
+		        	}
+		        	else if(centro.getSuscripcion() == Suscripcion.MEDIUM){
+		        		centro.setCreditosrestantes(200);
+		        	}
+		        	else if(centro.getSuscripcion() == Suscripcion.ADVANCED){
+		        		centro.setCreditosrestantes(300);
+		        	}
+		        	else if(centro.getSuscripcion() == Suscripcion.PREMIUM){
+		        		centro.setCreditosrestantes(400);
+		        	}
+        		}    
+        	}
+                if(centro.getAperturaAM().isAfter(centro.getCierreAM()) || centro.getAperturaPM().isAfter(centro.getCierrePM()) 
+                        || centro.getAperturaAM().isAfter(centro.getAperturaPM()) || centro.getAperturaPM().isBefore(centro.getCierreAM())){
+                    throw new IllegalArgumentException();
+                }
+	        return centroRepository.save(centro);
         }else{
             throw new IllegalArgumentException();
         }
+    }
+    public void fechacumplida(Centro centro) {
+    	LocalDate fechaActual = LocalDate.now();
+    	LocalDate fechaSuscripcion = centro.getUltimaSuscripcion();
+    	if(fechaSuscripcion.plusMonths(1).isAfter(fechaActual) ) {
+    		centro.setPagado(false);
+    	}
+    }
+    public void comprobacionCentros() {
+    	for(Centro c : findAll()) {
+    		fechacumplida(c);
+    	}
     }
   
     public Usuario asociarCentroUsuario(Usuario usuario, Centro centro) {
@@ -105,4 +168,48 @@ public class CentroService {
         usuario.setRol(Authorities.OWNER);
     	return usuarioService.save(usuario);
     }
+   private Boolean centroTieneCambios(Centro centro) {
+	   List<Centro> centros = findAll();
+	   Boolean result = false;
+	   for(Centro c: centros) {
+		   if(c.getId() == centro.getId()) {
+			   if(c.getNombre() != c.getNombre()) {
+				   result = true;
+				   
+			   }
+			   else if(c.getImagen() != centro.getImagen()) {
+				   result = true;
+				  
+			   }
+			   else if(c.getAperturaAM() != centro.getAperturaAM()) {
+				   result = true;
+				 
+			   }
+			   else if(c.getAperturaPM() != centro.getAperturaPM()) {
+				   result = true;
+			   }
+			   else if(c.getCierreAM() != centro.getCierreAM()) {
+				   result = true;
+			   }
+			   else if(c.getCierrePM() != centro.getCierrePM()) {
+				   result = true;
+			   }
+		   }
+	   }
+	   return result;
+   }
+   
+   public Centro updateCentroImage(long idCentro, String uri) {
+	   Optional<Centro> centro = findById(idCentro);
+	   if(!centro.isPresent())
+		   return null;
+	   else 
+	   {
+		   Centro result = centro.get();
+		   result.setImagen(uri);
+		   centroRepository.save(result);
+		   return result;
+		   
+	   }
+   }
 }

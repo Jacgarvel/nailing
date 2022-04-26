@@ -58,7 +58,7 @@ public class FormaService {
 	}
 //	encontrar las bases que posee el centro dado según el tipo seleccionado
     public List<Forma> findFormasByCentroBase(Long centroId) {	
-        return formaRepository.findByCentro(centroId);
+        return findByCentro(centroId);
     }
     
     public List<String> listPosibleForma(){
@@ -136,7 +136,7 @@ public class FormaService {
         return result;
     }
 
-    public List<Forma> findByCentro(Long centroId) {	
+    private List<Forma> findByCentro(Long centroId) {	
         return formaRepository.findByCentro(centroId);
     }
 }

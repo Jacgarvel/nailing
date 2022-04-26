@@ -10,6 +10,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +37,7 @@ import com.nailing.app.usuario.UsuarioService;
 @RestController
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE })
 @RequestMapping("/centros")
+@EnableScheduling
 public class CentroController {
     
     @Autowired
@@ -42,7 +46,7 @@ public class CentroController {
     private UsuarioService usuarioService;
 
     @Operation(summary = "Añade un Centro asociado a un Usuario")
-    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
+    @PreAuthorize("hasAuthority('"+ USER +"')")
     @PostMapping("/add/{idUser}")
     public ResponseEntity<Centro> addCentro(@RequestBody Centro centro, @PathVariable int idUser){
         centroService.asociarCentroUsuario(usuarioService.findById((long) idUser).get(), centro);
@@ -74,7 +78,7 @@ public class CentroController {
     }
     
     @Operation(summary = "Edita un Centro")
-    @PreAuthorize("hasAuthority('"+ ADMIN +"')")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
     @PutMapping("/edit")
     public ResponseEntity<Centro> updateCentro(@RequestBody Centro centro){
         Centro c = null;
@@ -85,4 +89,23 @@ public class CentroController {
         }
        
     }
+    
+    @Operation(summary = "Cambia la imagen de un centro")
+    @PreAuthorize("hasAuthority('"+ ADMIN +"') or hasAuthority('"+ OWNER +"')")
+    @PutMapping("/edit/{idCentro}/image")
+    public ResponseEntity<Centro> updateCentroImage(@PathVariable long idCentro, @RequestParam(value = "uri", required = true) String uri){
+    	Centro centro = centroService.updateCentroImage(idCentro, uri);
+    	if(centro == null)
+    		return new ResponseEntity<>(centro, HttpStatus.BAD_REQUEST);
+    	else
+    		return new ResponseEntity<>(centro, HttpStatus.OK);
+    }
+    
+    @Operation(summary = "Llamada automatica para comprobación de centros")
+    @Scheduled(fixedRate = 86400000)
+    @GetMapping("/comprobacionCentros")
+    public void comprobacionCentros() {
+    	centroService.comprobacionCentros();
+    }
+    
 }
